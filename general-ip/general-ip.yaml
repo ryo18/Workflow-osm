@@ -1,0 +1,8 @@
+name: 
+desc: run ip routine
+type: general ip
+validator: ip
+
+routines:
+  - modules:
+      - ipspace
