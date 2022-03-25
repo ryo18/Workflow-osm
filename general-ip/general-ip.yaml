@@ -1,8 +1,9 @@
-name: 
+name: general-ip
 desc: run ip routine
-type: general ip
+type: routine_ip
 validator: ip
 
 routines:
   - modules:
       - ipspace
+  
