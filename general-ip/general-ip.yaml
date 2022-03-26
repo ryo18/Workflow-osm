@@ -5,5 +5,4 @@ validator: ip
 
 routines:
   - modules:
-      - ipspace
-  
+      - portscan
