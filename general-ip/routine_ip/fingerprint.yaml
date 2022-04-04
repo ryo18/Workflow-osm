@@ -1,0 +1,37 @@
+name: fingerprint
+desc: fingerprint HTTP technology and response
+
+report:
+  final:
+    - "{{.Output}}/fingerprint/beautify-{{.Workspace}}-technologies.txt"
+    - "{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt"
+    - "{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt"
+
+params:
+  - inputfile: "{{.Output}}/portscan/http-{{.Workspace}}.txt"
+  - finThreads: '6'
+  - overviewThreads: '100'
+
+pre_run:
+  - CreateFolder("{{.Storages}}/http/{{.Workspace}}/")
+  - CreateFolder("{{.Output}}/fingerprint")
+
+steps:
+  - required:
+      - "{{.Binaries}}/httpx"
+      - "{{.inputfile}}"
+    commands:
+      - cat {{.inputfile}} | {{.Binaries}}/httpx -t {{.overviewThreads}} -no-color -json -title -tech-detect -status-code -silent -favicon >> {{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt
+    scripts:
+      - CleanJSONHttpx('{{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt', '{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt')
+      - ExecCmd("cat {{.Output}}/fingerprint/{{.Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt")
+      - Cat('{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt')
+
+  # clean up
+  - scripts:
+      - Sort("{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
+
+post_run:
+  - Append("{{.Storages}}/summary/{{.Workspace}}/technologies-{{.Workspace}}.txt", "{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
+  - Sort("{{.Storages}}/summary/{{.Workspace}}/technologies-{{.Workspace}}.txt")
+  - TotalTech("{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
