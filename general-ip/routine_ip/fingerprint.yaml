@@ -8,7 +8,7 @@ report:
     - "{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt"
 
 params:
-  - inputfile: "{{.Output}}/portscan/http-{{.Workspace}}.txt"
+  - inputfile: "{{.Output}}/portscan/{{.Workspace}}-http.txt"
   - finThreads: '6'
   - overviewThreads: '100'
 
