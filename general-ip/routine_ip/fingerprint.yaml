@@ -23,7 +23,7 @@ steps:
       - "{{.inputfile}}"
     commands:
       - cat {{.inputfile}} | {{.Binaries}}/httpx -t {{.overviewThreads}} -no-color -json -title -tech-detect -status-code -silent -favicon >> {{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt
-      - cat {{.inputfile}} | fff -d 1 -S -o body-header
+      - cat {{.inputfile}} | fff -d 1 -S -o {{.Output}}/fingerprint/body-header
     scripts:
       - CleanJSONHttpx('{{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt', '{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt')
       - ExecCmd("cat {{.Output}}/fingerprint/{{.Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt")
