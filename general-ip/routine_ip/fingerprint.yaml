@@ -29,11 +29,11 @@ steps:
       - CleanJSONHttpx('{{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt', '{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt')
       - ExecCmd("cat {{.Output}}/fingerprint/{{.Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt")
       - Cat('{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt')
-      - ExecCmd("grep -r 'Location\|Server\|X-Redirect-By\|X-Powered-By\|Alt-Svc\|Content-Location\|Content-Disposition' {{.Output}}/fingerprint/body-header/ >> {{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
 
-  # clean up
+  # clean up and find something interesting
   - scripts:
       - Sort("{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
+      - ExecCmd("grep -r 'Location\|Server\|X-Redirect-By\|X-Powered-By\|Alt-Svc\|Content-Location\|Content-Disposition' {{.Output}}/fingerprint/body-header/ >> {{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
 
 post_run:
   - Append("{{.Storages}}/summary/{{.Workspace}}/technologies-{{.Workspace}}.txt", "{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
