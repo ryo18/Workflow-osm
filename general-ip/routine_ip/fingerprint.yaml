@@ -29,7 +29,7 @@ steps:
       - CleanJSONHttpx('{{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt', '{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt')
       - ExecCmd("cat {{.Output}}/fingerprint/{{.Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt")
       - Cat('{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt')
-      - ExecCmd("grep -r 'Location\\\|Server\\\|X-Redirect-By\\\|X-Powered-By\\\|Alt-Svc\\\|Content-Location\\\|Content-Disposition' {{.Output}}/fingerprint/body-header/ >> {{.Output}}/fingerprint/headers-{{.Workspace}}.txt | xargs sed -i 's|.\*body-header/||g' {{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
+      - ExecCmd("grep -r 'Location\\\|Authorization\\\|Server\\\|X-Redirect-By\\\|X-Powered-By\\\|Alt-Svc\\\|Content-Location\\\|Content-Disposition' {{.Output}}/fingerprint/body-header/ >> {{.Output}}/fingerprint/headers-{{.Workspace}}.txt | xargs sed -i 's|.\*body-header/||g' {{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
 
   # clean up 
   - scripts:
