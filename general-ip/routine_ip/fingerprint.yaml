@@ -3,40 +3,40 @@ desc: fingerprint HTTP technology and response
 
 report:
   final:
-    - "{{.Output}}/fingerprint/beautify-{{.Workspace}}-technologies.txt"
-    - "{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt"
-    - "{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt"
-    - "{{.Output}}/fingerprint/headers-{{.Workspace}}.txt"
+    - "{{Output}}/fingerprint/beautify-{{Workspace}}-technologies.txt"
+    - "{{Output}}/fingerprint/{{Workspace}}-technologies.txt"
+    - "{{Output}}/fingerprint/beautify-http-{{Workspace}}.txt"
+    - "{{Output}}/fingerprint/headers-{{Workspace}}.txt"
 
 params:
-  - inputfile: "{{.Output}}/portscan/{{.Workspace}}-http.txt"
+  - inputfile: "{{Output}}/portscan/{{Workspace}}-http.txt"
   - finThreads: '6'
   - overviewThreads: '100'
 
 pre_run:
-  - CreateFolder("{{.Storages}}/http/{{.Workspace}}/")
-  - CreateFolder("{{.Output}}/fingerprint")
-  - CreateFolder("{{.Output}}/fingerprint/body-header")
+  - CreateFolder("{{Storages}}/http/{{Workspace}}/")
+  - CreateFolder("{{Output}}/fingerprint")
+  - CreateFolder("{{Output}}/fingerprint/body-header")
 
 steps:
   - required:
-      - "{{.Binaries}}/httpx"
-      - "{{.inputfile}}"
+      - "{{Binaries}}/httpx"
+      - "{{inputfile}}"
     commands:
-      - cat {{.inputfile}} | {{.Binaries}}/httpx -t {{.overviewThreads}} -no-color -json -title -tech-detect -status-code -silent -favicon >> {{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt
-      - cat {{.inputfile}} | fff -d 1 -S -o {{.Output}}/fingerprint/body-header
+      - cat {{inputfile}} | {{Binaries}}/httpx -t {{overviewThreads}} -no-color -json -title -tech-detect -status-code -silent -favicon >> {{Output}}/fingerprint/http-overview-{{Workspace}}.txt
+      - cat {{inputfile}} | fff -d 1 -S -o {{Output}}/fingerprint/body-header
     scripts:
-      - CleanJSONHttpx('{{.Output}}/fingerprint/http-overview-{{.Workspace}}.txt', '{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt')
-      - ExecCmd("cat {{.Output}}/fingerprint/{{.Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt")
-      - Cat('{{.Output}}/fingerprint/beautify-http-{{.Workspace}}.txt')
-      - ExecCmd("grep -r 'Location\\\|Authorization\\\|Server\\\|X-Redirect-By\\\|X-Powered-By\\\|Alt-Svc\\\|Content-Location\\\|Content-Disposition' {{.Output}}/fingerprint/body-header/ >> {{.Output}}/fingerprint/headers-{{.Workspace}}.txt | xargs sed -i 's|.\*body-header/||g' {{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
+      - CleanJSONHttpx('{{Output}}/fingerprint/http-overview-{{Workspace}}.txt', '{{Output}}/fingerprint/{{Workspace}}-technologies.txt')
+      - ExecCmd("cat {{Output}}/fingerprint/{{Workspace}}-technologies.txt | csvtk pretty -I -s ' | ' -W 75 > {{Output}}/fingerprint/beautify-http-{{Workspace}}.txt")
+      - Cat('{{Output}}/fingerprint/beautify-http-{{Workspace}}.txt')
+      - ExecCmd("grep -r 'Location\\\|Authorization\\\|Server\\\|X-Redirect-By\\\|X-Powered-By\\\|Alt-Svc\\\|Content-Location\\\|Content-Disposition' {{Output}}/fingerprint/body-header/ >> {{Output}}/fingerprint/headers-{{Workspace}}.txt | xargs sed -i 's|.\*body-header/||g' {{Output}}/fingerprint/headers-{{Workspace}}.txt")
 
   # clean up 
   - scripts:
-      - Sort("{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
-      - Sort("{{.Output}}/fingerprint/headers-{{.Workspace}}.txt")
+      - Sort("{{Output}}/fingerprint/{{Workspace}}-technologies.txt")
+      - Sort("{{Output}}/fingerprint/headers-{{Workspace}}.txt")
 
 post_run:
-  - Append("{{.Storages}}/summary/{{.Workspace}}/technologies-{{.Workspace}}.txt", "{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
-  - Sort("{{.Storages}}/summary/{{.Workspace}}/technologies-{{.Workspace}}.txt")
-  - TotalTech("{{.Output}}/fingerprint/{{.Workspace}}-technologies.txt")
+  - Append("{{Storages}}/summary/{{Workspace}}/technologies-{{Workspace}}.txt", "{{Output}}/fingerprint/{{Workspace}}-technologies.txt")
+  - Sort("{{Storages}}/summary/{{Workspace}}/technologies-{{Workspace}}.txt")
+  - TotalTech("{{Output}}/fingerprint/{{Workspace}}-technologies.txt")
