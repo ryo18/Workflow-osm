@@ -4,7 +4,7 @@ type: routine_ip
 validator: ip
 
 routines:
-  #- modules:
-  #    - portscan
+  - modules:
+      - portscan
   - modules:
       - fingerprint
