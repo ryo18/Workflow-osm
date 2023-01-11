@@ -21,7 +21,7 @@ params:
   - threads: "100"
   - lines: "200"
   # available input
-  - inputfile: "{{BaseFolder}}/targets-folder/{{Workspace}}.txt"
+  - inputfile: "/root/targets/{{Workspace}}.txt"
   - rate: "5000"
   - pthreads: "150"
   - nmapThreads: "20"
