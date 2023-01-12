@@ -14,7 +14,7 @@ params:
   - inputFile: "{{Output}}/portscan/{{Workspace}}-http.txt"
   - ffThreads: '{{ threads * 2 }}' # threads for single site
   - dirbThreads: '{{ threads }}'
-  - wordlists: "{{Data}}/wordlists/content/small.txt"
+  - wordlists: "{{Data}}/wordlists/content/medium.txt"
   - sign: "~/.jaeles/base-signatures/cves/.*"
   - sign2: "~/.jaeles/base-signatures/common/.*"
   - lines: "20"
