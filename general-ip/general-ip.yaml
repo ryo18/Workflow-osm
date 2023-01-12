@@ -9,4 +9,4 @@ routines:
   - modules:
       - fingerprint
   - modules:
-      - vulnscan
+      - pvulnscan
